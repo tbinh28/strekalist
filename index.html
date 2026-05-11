@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Streak Tracker</title>
+  <title>Strekalist</title>
   <style>
     :root {
       --bg: #0d1117;
@@ -69,7 +69,7 @@
 
   <div class="container">
     <header>
-      <h1>Trackers</h1>
+      <h1>Strekalist</h1>
       <div class="add-form">
         <input type="text" id="streakInput" placeholder="Tên thói quen...">
         <select id="streakType">
@@ -111,13 +111,14 @@
 
     // Thay config của m vào đây
     const firebaseConfig = {
-      apiKey: "API_KEY",
-      authDomain: "DOMAIN",
-      projectId: "PROJECT_ID",
-      storageBucket: "BUCKET",
-      messagingSenderId: "SENDER",
-      appId: "APPID"
-    };
+  apiKey: "AIzaSyAWCqyV9gkBAFaHqZcQ-bL6eytdvDdS6CU",
+  authDomain: "strekalist.firebaseapp.com",
+  projectId: "strekalist",
+  storageBucket: "strekalist.firebasestorage.app",
+  messagingSenderId: "384201323520",
+  appId: "1:384201323520:web:ad33f1d985a29014c314e5",
+  measurementId: "G-KBD8L7W6H4"
+};
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);

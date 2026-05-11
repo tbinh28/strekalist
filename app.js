@@ -17,12 +17,13 @@ import {
 //  🔥 FIREBASE CONFIGURATION — Điền thông tin project của bạn
 // ================================================================
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID",
+  apiKey: "AIzaSyAWCqyV9gkBAFaHqZcQ-bL6eytdvDdS6CU",
+  authDomain: "strekalist.firebaseapp.com",
+  projectId: "strekalist",
+  storageBucket: "strekalist.firebasestorage.app",
+  messagingSenderId: "384201323520",
+  appId: "1:384201323520:web:ad33f1d985a29014c314e5",
+  measurementId: "G-KBD8L7W6H4"
 };
 
 // ================================================================

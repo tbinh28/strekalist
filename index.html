@@ -1,11 +1,343 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streak Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <script src="app.js" type="module"></script>
+
+  <!-- Background decoration -->
+
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+
+  <div class="app-shell">
+
+```
+<!-- ── HEADER / ADD FORM ── -->
+<header class="app-header">
+  <div class="brand">
+    <span class="brand-icon">🔥</span>
+    <div class="brand-text">
+      <h1 class="brand-title">Streak Tracker</h1>
+      <p class="brand-sub">Xây dựng thói quen, chinh phục từng ngày.</p>
+    </div>
+  </div>
+
+  <div class="add-form" id="addForm">
+    <div class="input-wrapper">
+      <span class="input-icon">✦</span>
+      <input
+        type="text"
+        id="habitInput"
+        class="habit-input"
+        placeholder="Nhập tên thói quen mới…"
+        autocomplete="off"
+        maxlength="60"
+      />
+    </div>
+    <button class="btn-create" id="createBtn" type="button">
+      <span class="btn-create__text">Tạo</span>
+      <span class="btn-create__icon">＋</span>
+    </button>
+  </div>
+</header>
+
+<!-- ── HABIT LIST ── -->
+<main class="list-section">
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stats-item">
+      <span class="stats-value" id="totalCount">3</span>
+      <span class="stats-label">Thói quen</span>
+    </div>
+    <div class="stats-divider"></div>
+    <div class="stats-item">
+      <span class="stats-value" id="checkedToday">1</span>
+      <span class="stats-label">Hoàn thành hôm nay</span>
+    </div>
+    <div class="stats-divider"></div>
+    <div class="stats-item">
+      <span class="stats-value" id="bestStreak">21</span>
+      <span class="stats-label">Streak dài nhất</span>
+    </div>
+  </div>
+
+  <!-- Section title -->
+  <div class="section-header">
+    <h2 class="section-title">Danh sách thói quen</h2>
+    <span class="section-date" id="todayDate"></span>
+  </div>
+
+  <!-- Cards grid -->
+  <div class="habit-grid" id="habitGrid">
+
+    <!-- Card 1 -->
+    <article class="habit-card habit-card--checked" data-id="1">
+      <div class="card-top">
+        <div class="card-meta">
+          <span class="card-tag">📚 Học tập</span>
+        </div>
+        <div class="card-streak">
+          <span class="streak-fire">🔥</span>
+          <span class="streak-count">21</span>
+          <span class="streak-label">ngày</span>
+        </div>
+      </div>
+
+      <h3 class="card-title">Ôn thi Toán</h3>
+
+      <div class="card-bar">
+        <div class="card-bar__fill" style="--pct: 72%"></div>
+      </div>
+      <span class="card-bar-label">72% tháng này</span>
+
+      <div class="card-actions">
+        <button class="btn-checkin btn-checkin--done" type="button">
+          <span class="checkin-icon">✓</span>
+          <span class="checkin-text">Đã Check-in</span>
+        </button>
+        <button class="btn-note" type="button" title="Ghi chú">
+          <span class="note-icon">📝</span>
+          <span class="note-text">Note</span>
+        </button>
+      </div>
+    </article>
+
+    <!-- Card 2 -->
+    <article class="habit-card" data-id="2">
+      <div class="card-top">
+        <div class="card-meta">
+          <span class="card-tag">💪 Sức khoẻ</span>
+        </div>
+        <div class="card-streak">
+          <span class="streak-fire">🔥</span>
+          <span class="streak-count">15</span>
+          <span class="streak-label">ngày</span>
+        </div>
+      </div>
+
+      <h3 class="card-title">Tập thể dục buổi sáng</h3>
+
+      <div class="card-bar">
+        <div class="card-bar__fill" style="--pct: 50%"></div>
+      </div>
+      <span class="card-bar-label">50% tháng này</span>
+
+      <div class="card-actions">
+        <button class="btn-checkin" type="button">
+          <span class="checkin-icon">⚡</span>
+          <span class="checkin-text">Check-in</span>
+        </button>
+        <button class="btn-note" type="button" title="Ghi chú">
+          <span class="note-icon">📝</span>
+          <span class="note-text">Note</span>
+        </button>
+      </div>
+    </article>
+
+    <!-- Card 3 -->
+    <article class="habit-card" data-id="3">
+      <div class="card-top">
+        <div class="card-meta">
+          <span class="card-tag">🧘 Tinh thần</span>
+        </div>
+        <div class="card-streak">
+          <span class="streak-fire">🔥</span>
+          <span class="streak-count">7</span>
+          <span class="streak-label">ngày</span>
+        </div>
+      </div>
+
+      <h3 class="card-title">Thiền 10 phút</h3>
+
+      <div class="card-bar">
+        <div class="card-bar__fill" style="--pct: 30%"></div>
+      </div>
+      <span class="card-bar-label">30% tháng này</span>
+
+      <div class="card-actions">
+        <button class="btn-checkin" type="button">
+          <span class="checkin-icon">⚡</span>
+          <span class="checkin-text">Check-in</span>
+        </button>
+        <button class="btn-note" type="button" title="Ghi chú">
+          <span class="note-icon">📝</span>
+          <span class="note-text">Note</span>
+        </button>
+      </div>
+    </article>
+
+  </div><!-- /habit-grid -->
+
+  <!-- Empty state (hidden by default) -->
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <span class="empty-icon">🌱</span>
+    <p class="empty-title">Chưa có thói quen nào</p>
+    <p class="empty-sub">Thêm thói quen đầu tiên của bạn ở trên nhé!</p>
+  </div>
+
+</main>
+```
+
+  </div><!-- /app-shell -->
+
+  <!-- Note Modal -->
+
+  <div class="modal-overlay" id="noteModal" role="dialog" aria-modal="true" aria-label="Ghi chú">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">📝 Ghi chú hôm nay</h3>
+        <button class="modal-close" id="modalClose" type="button" aria-label="Đóng">✕</button>
+      </div>
+      <p class="modal-habit-name" id="modalHabitName"></p>
+      <textarea class="modal-textarea" id="modalTextarea" placeholder="Hôm nay bạn cảm thấy thế nào về thói quen này?…" rows="5"></textarea>
+      <div class="modal-footer">
+        <button class="btn-modal-save" id="modalSave" type="button">Lưu ghi chú</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── DATE ── */
+    const dateEl = document.getElementById('todayDate');
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+    /* ── CREATE HABIT ── */
+    const input = document.getElementById('habitInput');
+    const createBtn = document.getElementById('createBtn');
+    const grid = document.getElementById('habitGrid');
+    const totalCountEl = document.getElementById('totalCount');
+    const emptyState = document.getElementById('emptyState');
+
+    const TAGS = ['📖 Đọc sách', '💪 Sức khoẻ', '🧘 Tinh thần', '🎯 Mục tiêu', '🎨 Sáng tạo', '💻 Kỹ năng'];
+
+    function updateCount() {
+      const cards = grid.querySelectorAll('.habit-card');
+      totalCountEl.textContent = cards.length;
+      emptyState.style.display = cards.length === 0 ? 'flex' : 'none';
+    }
+
+    function createCard(name) {
+      const id = Date.now();
+      const tag = TAGS[Math.floor(Math.random() * TAGS.length)];
+      const card = document.createElement('article');
+      card.className = 'habit-card habit-card--new';
+      card.dataset.id = id;
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="card-meta"><span class="card-tag">${tag}</span></div>
+          <div class="card-streak">
+            <span class="streak-fire">🔥</span>
+            <span class="streak-count">0</span>
+            <span class="streak-label">ngày</span>
+          </div>
+        </div>
+        <h3 class="card-title">${name}</h3>
+        <div class="card-bar"><div class="card-bar__fill" style="--pct:0%"></div></div>
+        <span class="card-bar-label">0% tháng này</span>
+        <div class="card-actions">
+          <button class="btn-checkin" type="button">
+            <span class="checkin-icon">⚡</span>
+            <span class="checkin-text">Check-in</span>
+          </button>
+          <button class="btn-note" type="button" title="Ghi chú">
+            <span class="note-icon">📝</span>
+            <span class="note-text">Note</span>
+          </button>
+        </div>`;
+      grid.prepend(card);
+      requestAnimationFrame(() => card.classList.remove('habit-card--new'));
+      bindCard(card);
+      updateCount();
+    }
+
+    createBtn.addEventListener('click', () => {
+      const val = input.value.trim();
+      if (!val) { input.focus(); input.classList.add('input--error'); setTimeout(() => input.classList.remove('input--error'), 600); return; }
+      createCard(val);
+      input.value = '';
+      input.focus();
+    });
+
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') createBtn.click(); });
+
+    /* ── CHECK-IN ── */
+    function bindCard(card) {
+      const checkinBtn = card.querySelector('.btn-checkin');
+      const noteBtn = card.querySelector('.btn-note');
+
+      checkinBtn.addEventListener('click', () => {
+        const isDone = card.classList.toggle('habit-card--checked');
+        const countEl = card.querySelector('.streak-count');
+        const fill = card.querySelector('.card-bar__fill');
+        const barLabel = card.querySelector('.card-bar-label');
+
+        if (isDone) {
+          const n = parseInt(countEl.textContent) + 1;
+          countEl.textContent = n;
+          checkinBtn.innerHTML = '<span class="checkin-icon">✓</span><span class="checkin-text">Đã Check-in</span>';
+          checkinBtn.classList.add('btn-checkin--done');
+          // update best streak
+          const best = parseInt(document.getElementById('bestStreak').textContent);
+          if (n > best) document.getElementById('bestStreak').textContent = n;
+          // update checked count
+          updateChecked();
+        } else {
+          checkinBtn.innerHTML = '<span class="checkin-icon">⚡</span><span class="checkin-text">Check-in</span>';
+          checkinBtn.classList.remove('btn-checkin--done');
+          updateChecked();
+        }
+      });
+
+      noteBtn.addEventListener('click', () => openModal(card));
+    }
+
+    function updateChecked() {
+      const done = grid.querySelectorAll('.habit-card--checked').length;
+      document.getElementById('checkedToday').textContent = done;
+    }
+
+    /* ── MODAL ── */
+    const modal = document.getElementById('noteModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalSave = document.getElementById('modalSave');
+    const modalHabitName = document.getElementById('modalHabitName');
+    const modalTextarea = document.getElementById('modalTextarea');
+    let activeCard = null;
+
+    function openModal(card) {
+      activeCard = card;
+      modalHabitName.textContent = card.querySelector('.card-title').textContent;
+      modalTextarea.value = card.dataset.note || '';
+      modal.classList.add('modal-overlay--open');
+      modalTextarea.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('modal-overlay--open');
+      activeCard = null;
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    modalSave.addEventListener('click', () => {
+      if (activeCard) activeCard.dataset.note = modalTextarea.value;
+      closeModal();
+    });
+
+    /* ── BIND DEFAULT CARDS ── */
+    document.querySelectorAll('.habit-card').forEach(bindCard);
+    updateCount();
+  </script>
+
 </body>
 </html>

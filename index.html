@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
@@ -13,184 +12,82 @@
 <body>
 
   <!-- Background decoration -->
-
   <div class="bg-orb bg-orb--1"></div>
   <div class="bg-orb bg-orb--2"></div>
 
   <div class="app-shell">
 
-```
-<!-- ── HEADER / ADD FORM ── -->
-<header class="app-header">
-  <div class="brand">
-    <span class="brand-icon">🔥</span>
-    <div class="brand-text">
-      <h1 class="brand-title">Streak Tracker</h1>
-      <p class="brand-sub">Xây dựng thói quen, chinh phục từng ngày.</p>
-    </div>
-  </div>
-
-  <div class="add-form" id="addForm">
-    <div class="input-wrapper">
-      <span class="input-icon">✦</span>
-      <input
-        type="text"
-        id="habitInput"
-        class="habit-input"
-        placeholder="Nhập tên thói quen mới…"
-        autocomplete="off"
-        maxlength="60"
-      />
-    </div>
-    <button class="btn-create" id="createBtn" type="button">
-      <span class="btn-create__text">Tạo</span>
-      <span class="btn-create__icon">＋</span>
-    </button>
-  </div>
-</header>
-
-<!-- ── HABIT LIST ── -->
-<main class="list-section">
-
-  <!-- Stats bar -->
-  <div class="stats-bar">
-    <div class="stats-item">
-      <span class="stats-value" id="totalCount">3</span>
-      <span class="stats-label">Thói quen</span>
-    </div>
-    <div class="stats-divider"></div>
-    <div class="stats-item">
-      <span class="stats-value" id="checkedToday">1</span>
-      <span class="stats-label">Hoàn thành hôm nay</span>
-    </div>
-    <div class="stats-divider"></div>
-    <div class="stats-item">
-      <span class="stats-value" id="bestStreak">21</span>
-      <span class="stats-label">Streak dài nhất</span>
-    </div>
-  </div>
-
-  <!-- Section title -->
-  <div class="section-header">
-    <h2 class="section-title">Danh sách thói quen</h2>
-    <span class="section-date" id="todayDate"></span>
-  </div>
-
-  <!-- Cards grid -->
-  <div class="habit-grid" id="habitGrid">
-
-    <!-- Card 1 -->
-    <article class="habit-card habit-card--checked" data-id="1">
-      <div class="card-top">
-        <div class="card-meta">
-          <span class="card-tag">📚 Học tập</span>
-        </div>
-        <div class="card-streak">
-          <span class="streak-fire">🔥</span>
-          <span class="streak-count">21</span>
-          <span class="streak-label">ngày</span>
+    <!-- ── HEADER / ADD FORM ── -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon">🔥</span>
+        <div class="brand-text">
+          <h1 class="brand-title">Streak Tracker</h1>
+          <p class="brand-sub">Xây dựng thói quen, chinh phục từng ngày.</p>
         </div>
       </div>
 
-      <h3 class="card-title">Ôn thi Toán</h3>
-
-      <div class="card-bar">
-        <div class="card-bar__fill" style="--pct: 72%"></div>
-      </div>
-      <span class="card-bar-label">72% tháng này</span>
-
-      <div class="card-actions">
-        <button class="btn-checkin btn-checkin--done" type="button">
-          <span class="checkin-icon">✓</span>
-          <span class="checkin-text">Đã Check-in</span>
-        </button>
-        <button class="btn-note" type="button" title="Ghi chú">
-          <span class="note-icon">📝</span>
-          <span class="note-text">Note</span>
-        </button>
-      </div>
-    </article>
-
-    <!-- Card 2 -->
-    <article class="habit-card" data-id="2">
-      <div class="card-top">
-        <div class="card-meta">
-          <span class="card-tag">💪 Sức khoẻ</span>
+      <div class="add-form" id="addForm">
+        <div class="input-wrapper">
+          <span class="input-icon">✦</span>
+          <input
+            type="text"
+            id="habitInput"
+            class="habit-input"
+            placeholder="Nhập tên thói quen mới…"
+            autocomplete="off"
+            maxlength="60"
+          />
         </div>
-        <div class="card-streak">
-          <span class="streak-fire">🔥</span>
-          <span class="streak-count">15</span>
-          <span class="streak-label">ngày</span>
-        </div>
-      </div>
-
-      <h3 class="card-title">Tập thể dục buổi sáng</h3>
-
-      <div class="card-bar">
-        <div class="card-bar__fill" style="--pct: 50%"></div>
-      </div>
-      <span class="card-bar-label">50% tháng này</span>
-
-      <div class="card-actions">
-        <button class="btn-checkin" type="button">
-          <span class="checkin-icon">⚡</span>
-          <span class="checkin-text">Check-in</span>
-        </button>
-        <button class="btn-note" type="button" title="Ghi chú">
-          <span class="note-icon">📝</span>
-          <span class="note-text">Note</span>
+        <button class="btn-create" id="createBtn" type="button">
+          <span class="btn-create__text">Tạo</span>
+          <span class="btn-create__icon">＋</span>
         </button>
       </div>
-    </article>
+    </header>
 
-    <!-- Card 3 -->
-    <article class="habit-card" data-id="3">
-      <div class="card-top">
-        <div class="card-meta">
-          <span class="card-tag">🧘 Tinh thần</span>
+    <!-- ── HABIT LIST ── -->
+    <main class="list-section">
+
+      <!-- Stats bar -->
+      <div class="stats-bar">
+        <div class="stats-item">
+          <span class="stats-value" id="totalCount">0</span>
+          <span class="stats-label">Thói quen</span>
         </div>
-        <div class="card-streak">
-          <span class="streak-fire">🔥</span>
-          <span class="streak-count">7</span>
-          <span class="streak-label">ngày</span>
+        <div class="stats-divider"></div>
+        <div class="stats-item">
+          <span class="stats-value" id="checkedToday">0</span>
+          <span class="stats-label">Hoàn thành hôm nay</span>
+        </div>
+        <div class="stats-divider"></div>
+        <div class="stats-item">
+          <span class="stats-value" id="bestStreak">0</span>
+          <span class="stats-label">Streak dài nhất</span>
         </div>
       </div>
 
-      <h3 class="card-title">Thiền 10 phút</h3>
-
-      <div class="card-bar">
-        <div class="card-bar__fill" style="--pct: 30%"></div>
+      <!-- Section title -->
+      <div class="section-header">
+        <h2 class="section-title">Danh sách thói quen</h2>
+        <span class="section-date" id="todayDate"></span>
       </div>
-      <span class="card-bar-label">30% tháng này</span>
 
-      <div class="card-actions">
-        <button class="btn-checkin" type="button">
-          <span class="checkin-icon">⚡</span>
-          <span class="checkin-text">Check-in</span>
-        </button>
-        <button class="btn-note" type="button" title="Ghi chú">
-          <span class="note-icon">📝</span>
-          <span class="note-text">Note</span>
-        </button>
+      <!-- Cards grid (Đã xóa data ảo, Firebase sẽ nhét vào đây) -->
+      <div class="habit-grid" id="habitGrid"></div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <span class="empty-icon">🌱</span>
+        <p class="empty-title">Chưa có thói quen nào</p>
+        <p class="empty-sub">Thêm thói quen đầu tiên của bạn ở trên nhé!</p>
       </div>
-    </article>
 
-  </div><!-- /habit-grid -->
-
-  <!-- Empty state (hidden by default) -->
-  <div class="empty-state" id="emptyState" style="display:none;">
-    <span class="empty-icon">🌱</span>
-    <p class="empty-title">Chưa có thói quen nào</p>
-    <p class="empty-sub">Thêm thói quen đầu tiên của bạn ở trên nhé!</p>
-  </div>
-
-</main>
-```
+    </main>
 
   </div><!-- /app-shell -->
 
   <!-- Note Modal -->
-
   <div class="modal-overlay" id="noteModal" role="dialog" aria-modal="true" aria-label="Ghi chú">
     <div class="modal">
       <div class="modal-header">
@@ -205,138 +102,182 @@
     </div>
   </div>
 
-  <script>
+  <!-- SỬA THÀNH TYPE MODULE ĐỂ CHẠY FIREBASE -->
+  <script type="module">
+    // 1. IMPORT FIREBASE
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+
+    // M BÊ CỦA M VÀO ĐÂY NHÉ
+    const firebaseConfig = {
+  apiKey: "AIzaSyAWCqyV9gkBAFaHqZcQ-bL6eytdvDdS6CU",
+  authDomain: "strekalist.firebaseapp.com",
+  projectId: "strekalist",
+  storageBucket: "strekalist.firebasestorage.app",
+  messagingSenderId: "384201323520",
+  appId: "1:384201323520:web:ad33f1d985a29014c314e5",
+  measurementId: "G-KBD8L7W6H4"
+};
+
+    // Khởi tạo app & db
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const streaksRef = collection(db, "streaks");
+
     /* ── DATE ── */
     const dateEl = document.getElementById('todayDate');
     const now = new Date();
     dateEl.textContent = now.toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-    /* ── CREATE HABIT ── */
+    /* ── DOM ELEMENTS ── */
     const input = document.getElementById('habitInput');
     const createBtn = document.getElementById('createBtn');
     const grid = document.getElementById('habitGrid');
     const totalCountEl = document.getElementById('totalCount');
+    const checkedTodayEl = document.getElementById('checkedToday');
+    const bestStreakEl = document.getElementById('bestStreak');
     const emptyState = document.getElementById('emptyState');
 
-    const TAGS = ['📖 Đọc sách', '💪 Sức khoẻ', '🧘 Tinh thần', '🎯 Mục tiêu', '🎨 Sáng tạo', '💻 Kỹ năng'];
+    const TAGS = ['📖 Học tập', '💪 Thể thao', '🧘 Thư giãn', '🎯 Mục tiêu', '💻 Code'];
 
-    function updateCount() {
-      const cards = grid.querySelectorAll('.habit-card');
-      totalCountEl.textContent = cards.length;
-      emptyState.style.display = cards.length === 0 ? 'flex' : 'none';
-    }
+    /* ── LẤY DATA REALTIME TỪ FIREBASE ── */
+    const q = query(streaksRef, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+      grid.innerHTML = ''; // Clear để vẽ lại
+      let total = 0;
+      let checked = 0;
+      let best = 0;
 
-    function createCard(name) {
-      const id = Date.now();
+      snapshot.forEach((docSnap) => {
+        total++;
+        const data = docSnap.data();
+        const id = docSnap.id;
+
+        if (data.isChecked) checked++;
+        if (data.streakCount > best) best = data.streakCount;
+
+        renderCard(id, data);
+      });
+
+      // Update Header Stats
+      totalCountEl.textContent = total;
+      checkedTodayEl.textContent = checked;
+      bestStreakEl.textContent = best;
+      emptyState.style.display = total === 0 ? 'flex' : 'none';
+    });
+
+    /* ── TẠO STREAK MỚI LÊN FIREBASE ── */
+    createBtn.addEventListener('click', async () => {
+      const val = input.value.trim();
+      if (!val) { 
+        input.focus(); 
+        input.classList.add('input--error'); 
+        setTimeout(() => input.classList.remove('input--error'), 600); 
+        return; 
+      }
+      
       const tag = TAGS[Math.floor(Math.random() * TAGS.length)];
+      
+      try {
+        await addDoc(streaksRef, {
+          title: val,
+          tag: tag,
+          streakCount: 0,
+          isChecked: false,
+          note: "",
+          createdAt: new Date()
+        });
+        input.value = '';
+        input.focus();
+      } catch (error) {
+        alert("Lỗi tạo streak: " + error);
+      }
+    });
+
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') createBtn.click(); });
+
+    /* ── RENDER HTML VÀ GẮN SỰ KIỆN NÚT (CHECK-IN / NOTE) ── */
+    function renderCard(id, data) {
       const card = document.createElement('article');
-      card.className = 'habit-card habit-card--new';
-      card.dataset.id = id;
+      card.className = `habit-card ${data.isChecked ? 'habit-card--checked' : ''}`;
+      
       card.innerHTML = `
         <div class="card-top">
-          <div class="card-meta"><span class="card-tag">${tag}</span></div>
+          <div class="card-meta"><span class="card-tag">${data.tag}</span></div>
           <div class="card-streak">
             <span class="streak-fire">🔥</span>
-            <span class="streak-count">0</span>
+            <span class="streak-count">${data.streakCount}</span>
             <span class="streak-label">ngày</span>
           </div>
         </div>
-        <h3 class="card-title">${name}</h3>
-        <div class="card-bar"><div class="card-bar__fill" style="--pct:0%"></div></div>
-        <span class="card-bar-label">0% tháng này</span>
+        <h3 class="card-title">${data.title}</h3>
+        <div class="card-bar"><div class="card-bar__fill" style="--pct:${Math.min(data.streakCount * 5, 100)}%"></div></div>
+        <span class="card-bar-label">${Math.min(data.streakCount * 5, 100)}% mục tiêu</span>
         <div class="card-actions">
-          <button class="btn-checkin" type="button">
-            <span class="checkin-icon">⚡</span>
-            <span class="checkin-text">Check-in</span>
+          <button class="btn-checkin ${data.isChecked ? 'btn-checkin--done' : ''}" type="button">
+            <span class="checkin-icon">${data.isChecked ? '✓' : '⚡'}</span>
+            <span class="checkin-text">${data.isChecked ? 'Đã Check-in' : 'Check-in'}</span>
           </button>
           <button class="btn-note" type="button" title="Ghi chú">
             <span class="note-icon">📝</span>
             <span class="note-text">Note</span>
           </button>
         </div>`;
-      grid.prepend(card);
-      requestAnimationFrame(() => card.classList.remove('habit-card--new'));
-      bindCard(card);
-      updateCount();
-    }
+      
+      grid.appendChild(card);
 
-    createBtn.addEventListener('click', () => {
-      const val = input.value.trim();
-      if (!val) { input.focus(); input.classList.add('input--error'); setTimeout(() => input.classList.remove('input--error'), 600); return; }
-      createCard(val);
-      input.value = '';
-      input.focus();
-    });
-
-    input.addEventListener('keydown', e => { if (e.key === 'Enter') createBtn.click(); });
-
-    /* ── CHECK-IN ── */
-    function bindCard(card) {
+      // Nút Check-in: Bấm vô cập nhật thẳng lên DB
       const checkinBtn = card.querySelector('.btn-checkin');
-      const noteBtn = card.querySelector('.btn-note');
-
-      checkinBtn.addEventListener('click', () => {
-        const isDone = card.classList.toggle('habit-card--checked');
-        const countEl = card.querySelector('.streak-count');
-        const fill = card.querySelector('.card-bar__fill');
-        const barLabel = card.querySelector('.card-bar-label');
-
-        if (isDone) {
-          const n = parseInt(countEl.textContent) + 1;
-          countEl.textContent = n;
-          checkinBtn.innerHTML = '<span class="checkin-icon">✓</span><span class="checkin-text">Đã Check-in</span>';
-          checkinBtn.classList.add('btn-checkin--done');
-          // update best streak
-          const best = parseInt(document.getElementById('bestStreak').textContent);
-          if (n > best) document.getElementById('bestStreak').textContent = n;
-          // update checked count
-          updateChecked();
-        } else {
-          checkinBtn.innerHTML = '<span class="checkin-icon">⚡</span><span class="checkin-text">Check-in</span>';
-          checkinBtn.classList.remove('btn-checkin--done');
-          updateChecked();
-        }
+      checkinBtn.addEventListener('click', async () => {
+        const docRef = doc(db, "streaks", id);
+        const newStatus = !data.isChecked;
+        const newCount = newStatus ? data.streakCount + 1 : Math.max(0, data.streakCount - 1);
+        
+        await updateDoc(docRef, {
+          isChecked: newStatus,
+          streakCount: newCount
+        });
       });
 
-      noteBtn.addEventListener('click', () => openModal(card));
+      // Nút Note: Mở Modal
+      const noteBtn = card.querySelector('.btn-note');
+      noteBtn.addEventListener('click', () => openModal(id, data.title, data.note));
     }
 
-    function updateChecked() {
-      const done = grid.querySelectorAll('.habit-card--checked').length;
-      document.getElementById('checkedToday').textContent = done;
-    }
-
-    /* ── MODAL ── */
+    /* ── MODAL GHI CHÚ ── */
     const modal = document.getElementById('noteModal');
     const modalClose = document.getElementById('modalClose');
     const modalSave = document.getElementById('modalSave');
     const modalHabitName = document.getElementById('modalHabitName');
     const modalTextarea = document.getElementById('modalTextarea');
-    let activeCard = null;
+    let activeDocId = null;
 
-    function openModal(card) {
-      activeCard = card;
-      modalHabitName.textContent = card.querySelector('.card-title').textContent;
-      modalTextarea.value = card.dataset.note || '';
+    function openModal(id, title, note) {
+      activeDocId = id;
+      modalHabitName.textContent = title;
+      modalTextarea.value = note || '';
       modal.classList.add('modal-overlay--open');
       modalTextarea.focus();
     }
 
     function closeModal() {
       modal.classList.remove('modal-overlay--open');
-      activeCard = null;
+      activeDocId = null;
     }
 
     modalClose.addEventListener('click', closeModal);
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-    modalSave.addEventListener('click', () => {
-      if (activeCard) activeCard.dataset.note = modalTextarea.value;
+    
+    // Lưu note lên DB
+    modalSave.addEventListener('click', async () => {
+      if (activeDocId) {
+        await updateDoc(doc(db, "streaks", activeDocId), {
+          note: modalTextarea.value.trim()
+        });
+      }
       closeModal();
     });
 
-    /* ── BIND DEFAULT CARDS ── */
-    document.querySelectorAll('.habit-card').forEach(bindCard);
-    updateCount();
   </script>
 
 </body>

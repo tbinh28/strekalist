@@ -1,270 +1,351 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Strekalist</title>
-  <style>
-    :root {
-      --bg: #0d1117;
-      --panel: #161b22;
-      --text: #c9d1d9;
-      --text-muted: #8b949e;
-      --border: #30363d;
-      --primary: #da3633; /* Đỏ cho streak */
-      --primary-hover: #f85149;
-      --day-empty: #21262d;
-      --day-active: #da3633;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; line-height: 1.5; }
-    .container { max-width: 800px; margin: 0 auto; }
-    
-    /* Header & Form */
-    header { margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-    h1 { font-size: 24px; font-weight: 600; color: #fff; margin-bottom: 15px; }
-    .add-form { display: flex; gap: 10px; flex-wrap: wrap; }
-    input, select, button { padding: 10px 15px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 14px; outline: none; }
-    input:focus, select:focus { border-color: var(--primary); }
-    input { flex: 1; min-width: 200px; }
-    button { background: var(--text); color: var(--bg); font-weight: 600; cursor: pointer; transition: 0.2s; border: none; }
-    button:hover { background: #fff; }
-    
-    /* Streak Cards */
-    .streak-list { display: flex; flex-direction: column; gap: 20px; }
-    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
-    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .card-title { font-size: 18px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
-    .tag { font-size: 12px; padding: 2px 8px; border-radius: 12px; background: var(--border); color: var(--text-muted); }
-    .streak-count { font-size: 14px; color: var(--primary); font-weight: bold; }
-    
-    /* Heatmap Calendar */
-    .heatmap-wrapper { overflow-x: auto; padding-bottom: 10px; }
-    .heatmap { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; gap: 4px; min-width: max-content; }
-    .day-box { width: 14px; height: 14px; background-color: var(--day-empty); border-radius: 3px; cursor: pointer; position: relative; transition: 0.1s; }
-    .day-box:hover { transform: scale(1.2); z-index: 10; border: 1px solid #fff; }
-    .day-box.active { background-color: var(--day-active); }
-    .day-box.has-note::after {
-      content: ''; position: absolute; top: -2px; right: -2px; width: 6px; height: 6px; background-color: #ffd700; border-radius: 50%; border: 1px solid var(--panel);
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreakOS — Advanced Habit Tracker</title>
 
-    /* Modal */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 100; }
-    .modal-overlay.open { display: flex; }
-    .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px; width: 90%; max-width: 400px; }
-    .modal h3 { margin-bottom: 5px; color: #fff; }
-    .modal-date { font-size: 12px; color: var(--text-muted); margin-bottom: 15px; display: block; }
-    .study-fields { display: none; margin-bottom: 10px; }
-    .study-fields.show { display: flex; flex-direction: column; gap: 10px; }
-    textarea { width: 100%; height: 100px; padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); resize: none; margin-bottom: 15px; outline: none; }
-    textarea:focus { border-color: var(--primary); }
-    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
-    .btn-cancel { background: transparent; color: var(--text); border: 1px solid var(--border); }
-    .btn-cancel:hover { background: var(--border); }
-    .btn-save { background: var(--primary); color: #fff; }
-    .btn-save:hover { background: var(--primary-hover); }
-  </style>
-</head>
-<body>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <div class="container">
-    <header>
-      <h1>Strekalist</h1>
-      <div class="add-form">
-        <input type="text" id="streakInput" placeholder="Tên thói quen...">
-        <select id="streakType">
-          <option value="Tự do">Tự do</option>
-          <option value="Học tập">Học tập</option>
-          <option value="Thể thao">Thể thao</option>
-        </select>
-        <button id="addBtn">Tạo</button>
-      </div>
-    </header>
-
-    <div class="streak-list" id="streakList">
-      <!-- Data render here -->
-    </div>
-  </div>
-
-  <!-- Note Modal -->
-  <div class="modal-overlay" id="noteModal">
-    <div class="modal">
-      <h3 id="modalTitle">Ghi chú</h3>
-      <span class="modal-date" id="modalDate"></span>
-      
-      <div class="study-fields" id="studyFields">
-        <input type="number" id="studyTime" placeholder="Thời gian học (phút)...">
-      </div>
-
-      <textarea id="modalNote" placeholder="Nội dung..."></textarea>
-      
-      <div class="modal-actions">
-        <button class="btn-cancel" id="btnCancel">Đóng</button>
-        <button class="btn-save" id="btnSave">Lưu & Check-in</button>
-      </div>
-    </div>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
-
-    // Thay config của m vào đây
-    const firebaseConfig = {
-  apiKey: "AIzaSyAWCqyV9gkBAFaHqZcQ-bL6eytdvDdS6CU",
-  authDomain: "strekalist.firebaseapp.com",
-  projectId: "strekalist",
-  storageBucket: "strekalist.firebasestorage.app",
-  messagingSenderId: "384201323520",
-  appId: "1:384201323520:web:ad33f1d985a29014c314e5",
-  measurementId: "G-KBD8L7W6H4"
-};
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Tính toán mảng 90 ngày gần nhất cho Heatmap
-    function getLast90Days() {
-      const dates = [];
-      for (let i = 89; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        dates.push(d.toISOString().split('T')[0]); // Format YYYY-MM-DD
-      }
-      return dates;
-    }
-    const daysRange = getLast90Days();
-
-    // DOM
-    const streakList = document.getElementById('streakList');
-    const input = document.getElementById('streakInput');
-    const typeSelect = document.getElementById('streakType');
-    const addBtn = document.getElementById('addBtn');
-    
-    // Modal DOM
-    const modal = document.getElementById('noteModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDate = document.getElementById('modalDate');
-    const modalNote = document.getElementById('modalNote');
-    const studyFields = document.getElementById('studyFields');
-    const studyTime = document.getElementById('studyTime');
-    const btnCancel = document.getElementById('btnCancel');
-    const btnSave = document.getElementById('btnSave');
-
-    let currentConfig = { streakId: null, dateStr: null, type: null };
-
-    // Tạo mới Streak
-    addBtn.addEventListener('click', async () => {
-      const title = input.value.trim();
-      const type = typeSelect.value;
-      if (!title) return;
-      
-      await addDoc(collection(db, "streaks"), {
-        title, type, createdAt: new Date()
-      });
-      input.value = '';
-    });
-
-    // Lắng nghe dữ liệu Realtime
-    onSnapshot(collection(db, "streaks"), (snapshot) => {
-      streakList.innerHTML = '';
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const streakId = docSnap.id;
-        renderCard(streakId, data);
-      });
-    });
-
-    // Render từng Card
-    function renderCard(id, data) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      
-      // Khởi tạo sub-collection checkins (ảo trên UI, fetch thực tế ở dưới)
-      card.innerHTML = `
-        <div class="card-header">
-          <div class="card-title">${data.title} <span class="tag">${data.type}</span></div>
-          <div class="streak-count" id="count-${id}">🔥 0 ngày</div>
-        </div>
-        <div class="heatmap-wrapper">
-          <div class="heatmap" id="heatmap-${id}"></div>
-        </div>
-      `;
-      streakList.appendChild(card);
-
-      const heatmapEl = document.getElementById(`heatmap-${id}`);
-      let totalStreak = 0;
-
-      // Lấy lịch sử Check-ins của streak này
-      onSnapshot(collection(db, `streaks/${id}/checkins`), (checkinSnap) => {
-        const checkinData = {};
-        totalStreak = checkinSnap.size;
-        document.getElementById(`count-${id}`).textContent = `🔥 ${totalStreak} ngày`;
-
-        checkinSnap.forEach(snap => {
-          checkinData[snap.id] = snap.data();
-        });
-
-        // Vẽ 90 ô vuông
-        heatmapEl.innerHTML = '';
-        daysRange.forEach(dateStr => {
-          const box = document.createElement('div');
-          box.className = 'day-box';
-          box.title = dateStr;
-          
-          if (checkinData[dateStr]) {
-            box.classList.add('active'); // Ngày màu đỏ
-            if (checkinData[dateStr].note || checkinData[dateStr].studyTime) {
-              box.classList.add('has-note'); // Chấm vàng
-            }
-          }
-
-          // Click vào ô để check-in / xem note
-          box.addEventListener('click', () => openModal(id, data.title, data.type, dateStr, checkinData[dateStr]));
-          heatmapEl.appendChild(box);
-        });
-      });
-    }
-
-    // Xử lý Modal
-    function openModal(streakId, title, type, dateStr, existingData) {
-      currentConfig = { streakId, dateStr, type };
-      
-      modalTitle.textContent = title;
-      modalDate.textContent = `Ngày: ${dateStr}`;
-      
-      // Hiển thị template riêng cho Học tập
-      if (type === 'Học tập') {
-        studyFields.classList.add('show');
-        studyTime.value = existingData?.studyTime || '';
-      } else {
-        studyFields.classList.remove('show');
-      }
-
-      modalNote.value = existingData?.note || '';
-      modal.classList.add('open');
-    }
-
-    btnCancel.addEventListener('click', () => modal.classList.remove('open'));
-
-    // Lưu / Check-in
-    btnSave.addEventListener('click', async () => {
-      const { streakId, dateStr, type } = currentConfig;
-      const docRef = doc(db, `streaks/${streakId}/checkins`, dateStr);
-      
-      const payload = {
-        note: modalNote.value.trim(),
-        timestamp: new Date()
-      };
-
-      if (type === 'Học tập') {
-        payload.studyTime = parseInt(studyTime.value) || 0;
-      }
-
-      // setDoc để tạo hoặc ghi đè note của ngày đó
-      await setDoc(docRef, payload, { merge: true });
-      modal.classList.remove('open');
-    });
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'monospace'],
+            display: ['Syne', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              red: '#FF3B3B',
+              redDim: '#CC2E2E',
+              redGlow: 'rgba(255,59,59,0.15)',
+              gold: '#FFD700',
+              goldDim: '#B8960A',
+              ice: '#60CFFF',
+              iceDim: 'rgba(96,207,255,0.15)',
+              surface: '#0D1117',
+              panel: '#161B22',
+              card: '#1C2333',
+              border: '#30363D',
+              borderLight: '#444C56',
+              text: '#E6EDF3',
+              muted: '#8B949E',
+              dimmer: '#6E7681',
+            },
+          },
+          animation: {
+            'badge-pop': 'badgePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+            'slide-up': 'slideUp 0.3s ease-out forwards',
+            'pulse-red': 'pulseRed 2s ease-in-out infinite',
+            'shimmer': 'shimmer 2s linear infinite',
+          },
+          keyframes: {
+            badgePop: {
+              '0%': { transform: 'scale(0)', opacity: '0' },
+              '100%': { transform: 'scale(1)', opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(24px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+            pulseRed: {
+              '0%, 100%': { boxShadow: '0 0 0 0 rgba(255,59,59,0.4)' },
+              '50%': { boxShadow: '0 0 0 6px rgba(255,59,59,0)' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' },
+            },
+          },
+        },
+      },
+    };
   </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="dark bg-brand-surface text-brand-text font-mono min-h-screen">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 border-b border-brand-border bg-brand-surface/90 backdrop-blur-md">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="logo-mark">
+          <span class="text-brand-red font-display font-black text-xl tracking-tighter">Streak</span><span class="text-brand-text font-display font-black text-xl tracking-tighter">OS</span>
+        </div>
+        <span class="hidden sm:block text-brand-dimmer text-xs border-l border-brand-border pl-3">Advanced Habit Tracker</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Freeze counter -->
+        <div id="global-freeze-display" class="freeze-badge flex items-center gap-1.5 bg-brand-iceDim border border-brand-ice/30 rounded-lg px-3 py-1.5">
+          <span class="text-sm">❄️</span>
+          <span class="text-brand-ice text-xs font-bold" id="global-freeze-count">0</span>
+          <span class="text-brand-ice/60 text-xs hidden sm:block">thẻ đóng băng</span>
+        </div>
+
+        <!-- Add streak button -->
+        <button id="btn-add-streak" class="flex items-center gap-2 bg-brand-red hover:bg-brand-redDim text-white text-xs font-bold px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95">
+          <i class="fa-solid fa-plus"></i>
+          <span class="hidden sm:inline">Thêm thói quen</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- BADGES RIBBON -->
+  <div class="max-w-5xl mx-auto px-4 pt-4">
+    <div class="badge-ribbon flex items-center gap-3 overflow-x-auto pb-2">
+      <span class="text-brand-dimmer text-xs shrink-0">Huy hiệu:</span>
+      <div class="badge-item shrink-0 opacity-30" id="badge-7" title="7 ngày liên tiếp">
+        <div class="badge-icon bg-amber-500/20 border border-amber-500/40 rounded-lg px-3 py-1.5 flex items-center gap-1.5">
+          <i class="fa-solid fa-fire text-amber-400 text-sm"></i>
+          <span class="text-amber-300 text-xs font-bold">7 ngày</span>
+        </div>
+      </div>
+      <div class="badge-item shrink-0 opacity-30" id="badge-30" title="30 ngày liên tiếp">
+        <div class="badge-icon bg-purple-500/20 border border-purple-500/40 rounded-lg px-3 py-1.5 flex items-center gap-1.5">
+          <i class="fa-solid fa-crown text-purple-400 text-sm"></i>
+          <span class="text-purple-300 text-xs font-bold">30 ngày</span>
+        </div>
+      </div>
+      <div class="badge-item shrink-0 opacity-30" id="badge-100" title="100 ngày liên tiếp">
+        <div class="badge-icon bg-brand-gold/20 border border-brand-gold/40 rounded-lg px-3 py-1.5 flex items-center gap-1.5">
+          <i class="fa-solid fa-trophy text-brand-gold text-sm"></i>
+          <span class="text-yellow-300 text-xs font-bold">100 ngày</span>
+        </div>
+      </div>
+      <div id="badges-container" class="flex items-center gap-3"></div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-5xl mx-auto px-4 py-6">
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center">
+      <div class="text-6xl mb-4">🎯</div>
+      <h2 class="text-brand-text font-display font-bold text-2xl mb-2">Bắt đầu hành trình của bạn</h2>
+      <p class="text-brand-muted text-sm max-w-sm mb-6">Tạo thói quen đầu tiên và theo dõi chuỗi ngày kiên trì của bạn.</p>
+      <button onclick="document.getElementById('btn-add-streak').click()" class="bg-brand-red hover:bg-brand-redDim text-white text-sm font-bold px-6 py-3 rounded-xl transition-all hover:scale-105">
+        <i class="fa-solid fa-plus mr-2"></i>Tạo thói quen đầu tiên
+      </button>
+    </div>
+
+    <!-- Streaks grid -->
+    <div id="streaks-container" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <!-- Cards injected by JS -->
+    </div>
+  </main>
+
+  <!-- ========================= -->
+  <!-- MODAL: ADD STREAK         -->
+  <!-- ========================= -->
+  <div id="modal-add-streak" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm" id="add-backdrop"></div>
+    <div class="modal-box relative bg-brand-card border border-brand-border rounded-2xl w-full max-w-md shadow-2xl animate-slide-up">
+      <div class="modal-header flex items-center justify-between p-5 border-b border-brand-border">
+        <h2 class="font-display font-bold text-lg text-brand-text">Thêm thói quen mới</h2>
+        <button id="close-add-modal" class="text-brand-muted hover:text-brand-text transition-colors"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="p-5 space-y-4">
+        <div>
+          <label class="label-text">Tên thói quen <span class="text-brand-red">*</span></label>
+          <input id="input-title" type="text" placeholder="VD: Học tiếng Anh mỗi ngày..." class="input-field" />
+        </div>
+        <div>
+          <label class="label-text">Danh mục</label>
+          <div class="grid grid-cols-2 gap-2 mt-1">
+            <label class="category-option">
+              <input type="radio" name="category" value="Học tập" class="sr-only" />
+              <div class="category-card">📚 Học tập</div>
+            </label>
+            <label class="category-option">
+              <input type="radio" name="category" value="Gym" class="sr-only" />
+              <div class="category-card">💪 Gym / Thể thao</div>
+            </label>
+            <label class="category-option">
+              <input type="radio" name="category" value="Tình yêu" class="sr-only" />
+              <div class="category-card">❤️ Tình yêu</div>
+            </label>
+            <label class="category-option">
+              <input type="radio" name="category" value="Custom" class="sr-only" />
+              <div class="category-card">✨ Khác</div>
+            </label>
+          </div>
+        </div>
+        <div>
+          <label class="label-text">Tần suất</label>
+          <div class="flex gap-2 mt-1">
+            <label class="flex-1 frequency-option">
+              <input type="radio" name="frequency" value="daily" class="sr-only" checked />
+              <div class="frequency-card">📅 Hàng ngày</div>
+            </label>
+            <label class="flex-1 frequency-option">
+              <input type="radio" name="frequency" value="3_per_week" class="sr-only" />
+              <div class="frequency-card">📆 3 lần/tuần</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Start date for Tình yêu -->
+        <div id="start-date-field" class="hidden">
+          <label class="label-text">Ngày bắt đầu bên nhau ❤️</label>
+          <input id="input-start-date" type="date" class="input-field" />
+        </div>
+
+        <div>
+          <label class="label-text">Số thẻ đóng băng ban đầu ❄️</label>
+          <input id="input-freezes" type="number" value="2" min="0" max="10" class="input-field" />
+        </div>
+      </div>
+      <div class="p-5 border-t border-brand-border flex gap-3 justify-end">
+        <button id="cancel-add-modal" class="btn-secondary">Hủy</button>
+        <button id="save-streak-btn" class="btn-primary">
+          <i class="fa-solid fa-check mr-1.5"></i>Tạo thói quen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- MODAL: CHECK-IN (DYNAMIC) -->
+  <!-- ========================= -->
+  <div id="modal-checkin" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm" id="checkin-backdrop"></div>
+    <div class="modal-box relative bg-brand-card border border-brand-border rounded-2xl w-full max-w-lg shadow-2xl animate-slide-up">
+      <div class="modal-header flex items-center justify-between p-5 border-b border-brand-border">
+        <div>
+          <div id="checkin-modal-label" class="text-brand-muted text-xs mb-0.5">Check-in hôm nay</div>
+          <h2 id="checkin-modal-title" class="font-display font-bold text-lg text-brand-text"></h2>
+        </div>
+        <button id="close-checkin-modal" class="text-brand-muted hover:text-brand-text transition-colors"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Love counter banner -->
+      <div id="love-banner" class="hidden love-banner-gradient p-3 text-center border-b border-brand-border">
+        <div class="text-2xl mb-0.5">❤️</div>
+        <div class="text-brand-text font-display font-bold" id="love-days-count">Đã bên nhau 0 ngày</div>
+      </div>
+
+      <div class="p-5 space-y-4 max-h-[65vh] overflow-y-auto custom-scroll">
+
+        <!-- POMODORO (Học tập mode) -->
+        <div id="pomodoro-widget" class="hidden bg-brand-panel border border-brand-border rounded-xl p-4">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-brand-muted text-xs font-bold uppercase tracking-widest">🍅 Pomodoro</span>
+            <span class="text-brand-dimmer text-xs">25 phút tập trung</span>
+          </div>
+          <div class="text-center">
+            <div id="pomodoro-display" class="font-display font-black text-5xl text-brand-red tabular-nums tracking-tight">25:00</div>
+            <div class="flex justify-center gap-3 mt-4">
+              <button id="pomodoro-start" class="pomodoro-btn bg-brand-red hover:bg-brand-redDim">
+                <i class="fa-solid fa-play text-xs"></i> Start
+              </button>
+              <button id="pomodoro-pause" class="pomodoro-btn bg-brand-panel border border-brand-border text-brand-muted hover:text-brand-text hidden">
+                <i class="fa-solid fa-pause text-xs"></i> Pause
+              </button>
+              <button id="pomodoro-reset" class="pomodoro-btn bg-brand-panel border border-brand-border text-brand-muted hover:text-brand-text">
+                <i class="fa-solid fa-rotate text-xs"></i> Reset
+              </button>
+            </div>
+          </div>
+          <div id="pomodoro-status" class="text-center mt-3 text-brand-muted text-xs"></div>
+        </div>
+
+        <!-- Study time input (Học tập mode) -->
+        <div id="study-time-field" class="hidden">
+          <label class="label-text">Thời gian học hôm nay (phút)</label>
+          <input id="input-study-time" type="number" placeholder="VD: 90" min="0" class="input-field" />
+        </div>
+
+        <!-- Image upload (Gym mode) -->
+        <div id="image-upload-field" class="hidden">
+          <label class="label-text">Ảnh check (body / workout)</label>
+          <div id="upload-area" class="upload-zone border-2 border-dashed border-brand-border rounded-xl p-6 text-center cursor-pointer hover:border-brand-red/60 transition-colors">
+            <i class="fa-solid fa-camera text-3xl text-brand-dimmer mb-2 block"></i>
+            <span class="text-brand-muted text-sm">Kéo thả hoặc click để chọn ảnh</span>
+            <input id="input-image" type="file" accept="image/*" class="hidden" />
+          </div>
+          <div id="image-preview" class="hidden mt-2">
+            <img id="preview-img" src="" alt="preview" class="w-full h-40 object-cover rounded-lg border border-brand-border" />
+            <button id="remove-img" class="text-brand-muted hover:text-brand-red text-xs mt-1 flex items-center gap-1"><i class="fa-solid fa-trash-can"></i> Xóa ảnh</button>
+          </div>
+        </div>
+
+        <!-- Body stats (Gym mode) -->
+        <div id="body-stats-field" class="hidden">
+          <label class="label-text">Thông số hôm nay</label>
+          <div class="grid grid-cols-2 gap-2 mt-1">
+            <div>
+              <span class="text-brand-dimmer text-xs">Cân nặng (kg)</span>
+              <input id="input-weight" type="number" step="0.1" placeholder="72.5" class="input-field mt-1" />
+            </div>
+            <div>
+              <span class="text-brand-dimmer text-xs">Quãng đường (km)</span>
+              <input id="input-distance" type="number" step="0.1" placeholder="5.0" class="input-field mt-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Note (all modes) -->
+        <div>
+          <label class="label-text">Ghi chú hôm nay</label>
+          <textarea id="input-note" rows="3" placeholder="Cảm nhận, tiến độ, suy nghĩ..." class="input-field resize-none"></textarea>
+        </div>
+
+        <!-- Freeze option -->
+        <div id="freeze-option" class="hidden bg-brand-iceDim border border-brand-ice/30 rounded-xl p-4">
+          <div class="flex items-start gap-3">
+            <div class="text-2xl mt-0.5">❄️</div>
+            <div class="flex-1">
+              <div class="font-bold text-brand-ice text-sm mb-1">Dùng Thẻ Đóng Băng Cứu Cánh?</div>
+              <div class="text-brand-ice/70 text-xs mb-3">Bạn đã miss ngày hôm qua. Dùng 1 thẻ để bảo toàn chuỗi streak nhé!</div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="use-freeze-checkbox" class="w-4 h-4 accent-sky-400 rounded" />
+                <span class="text-brand-ice text-sm">Dùng 1 thẻ đóng băng <span id="freeze-remaining-count" class="font-bold"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-5 border-t border-brand-border flex gap-3 justify-end">
+        <button id="cancel-checkin-modal" class="btn-secondary">Hủy</button>
+        <button id="save-checkin-btn" class="btn-primary">
+          <i class="fa-solid fa-check-circle mr-1.5"></i>Check-in hôm nay!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- MODAL: DELETE CONFIRM     -->
+  <!-- ========================= -->
+  <div id="modal-delete" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="relative bg-brand-card border border-brand-border rounded-2xl w-full max-w-sm shadow-2xl p-6 text-center animate-slide-up">
+      <div class="text-5xl mb-3">🗑️</div>
+      <h3 class="font-display font-bold text-lg text-brand-text mb-1">Xóa thói quen?</h3>
+      <p class="text-brand-muted text-sm mb-5" id="delete-confirm-text">Hành động này không thể hoàn tác.</p>
+      <div class="flex gap-3 justify-center">
+        <button id="cancel-delete" class="btn-secondary">Hủy</button>
+        <button id="confirm-delete" class="btn-danger">
+          <i class="fa-solid fa-trash-can mr-1.5"></i>Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Firebase + App -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>
